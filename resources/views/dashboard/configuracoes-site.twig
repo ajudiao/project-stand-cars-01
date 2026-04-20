@@ -1,0 +1,303 @@
+{% extends "layouts/admin.twig" %}
+    {% block content %}
+
+        <!-- Main Content -->
+        <div class="main-content">            <!-- Page Content -->
+            <main class="page-content">
+                <div class="container-fluid">
+                    <!-- Settings Tabs -->
+                    <ul class="nav nav-tabs mb-4" id="settingsTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button">
+                                <i class="bi bi-gear"></i> Geral
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="seo-tab" data-bs-toggle="tab" data-bs-target="#seo" type="button">
+                                <i class="bi bi-search"></i> SEO
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="social-tab" data-bs-toggle="tab" data-bs-target="#social" type="button">
+                                <i class="bi bi-share"></i> Redes Sociais
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="integrations-tab" data-bs-toggle="tab" data-bs-target="#integrations" type="button">
+                                <i class="bi bi-plugin"></i> Integrações
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Tab Content -->
+                    <div class="tab-content" id="settingsTabContent">
+                        <!-- General Settings -->
+                        <div class="tab-pane fade show active" id="general" role="tabpanel">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6 class="mb-0">Informações Gerais do Site</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <form id="generalSettingsForm">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Nome da Concessionária</label>
+                                                    <input type="text" class="form-control" name="site_name" value="{{ settings.site_name ?? 'AutoVendas Premium' }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Tagline</label>
+                                                    <input type="text" class="form-control" name="site_tagline" value="{{ settings.site_tagline ?? 'Seus Carros de Confiança' }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Descrição do Site</label>
+                                                    <textarea class="form-control" name="site_description" rows="3">{{ settings.site_description ?? 'Bem-vindo à AutoVendas Premium! Somos uma concessionária especializada em automóveis de qualidade com atendimento de excelência.' }}</textarea>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Telefone</label>
+                                                        <input type="tel" class="form-control" name="site_phone" value="{{ settings.site_phone ?? '(+244) 936145154' }}">
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Email de Contato</label>
+                                                        <input type="email" class="form-control" name="site_email" value="{{ settings.site_email ?? 'contato@autovendas.com' }}">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Endereço</label>
+                                                        <input type="text" class="form-control" name="site_address" value="{{ settings.site_address ?? '' }}">
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Cidade</label>
+                                                        <input type="text" class="form-control" name="site_city" value="{{ settings.site_city ?? 'Luanda' }}">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Horário de Funcionamento</label>
+                                                    <input type="text" class="form-control" name="site_hours" value="{{ settings.site_hours ?? 'Segunda a Sábado: 9h - 18h | Domingo: 10h - 17h' }}">
+                                                </div>
+                                                <div class="form-check mb-3">
+                                                    <input class="form-check-input" type="checkbox" name="site_blog_enabled" id="enableBlog" {% if settings.site_blog_enabled == '1' %}checked{% endif %} value="1">
+                                                    <label class="form-check-label" for="enableBlog">
+                                                        Ativar Blog
+                                                    </label>
+                                                </div>
+                                                <div class="form-check mb-3">
+                                                    <input class="form-check-input" type="checkbox" name="site_newsletter_enabled" id="enableNewsletter" {% if settings.site_newsletter_enabled == '1' %}checked{% endif %} value="1">
+                                                    <label class="form-check-label" for="enableNewsletter">
+                                                        Newsletter
+                                                    </label>
+                                                </div>
+                                                <button type="button" onclick="saveSiteSettings('generalSettingsForm')" class="btn btn-primary">
+                                                    <i class="bi bi-check-lg"></i> Salvar Configurações
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- SEO Settings -->
+                        <div class="tab-pane fade" id="seo" role="tabpanel">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6 class="mb-0">Otimização para Motores de Busca (SEO)</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <form id="seoSettingsForm">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Meta Title</label>
+                                                    <input type="text" class="form-control" name="seo_title" value="{{ settings.seo_title ?? 'AutoVendas Premium - Seus Carros de Confiança' }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Meta Description</label>
+                                                    <textarea class="form-control" name="seo_description" rows="2">{{ settings.seo_description ?? 'Concessionária de automóveis com as melhores opções de carros novos e seminovos' }}</textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Palavras-chave</label>
+                                                    <input type="text" class="form-control" name="seo_keywords" value="{{ settings.seo_keywords ?? 'carros, automóveis, concessionária, compra de carros' }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Google Analytics ID</label>
+                                                    <input type="text" class="form-control" name="seo_google_analytics" value="{{ settings.seo_google_analytics ?? '' }}" placeholder="GA-XXXXXXXXX-X">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Google Search Console</label>
+                                                    <input type="text" class="form-control" name="seo_google_console" value="{{ settings.seo_google_console ?? '' }}" placeholder="Código de verificação">
+                                                </div>
+                                                <div class="form-check mb-3">
+                                                    <input class="form-check-input" type="checkbox" name="seo_allow_robots" id="robotsTxt" {% if settings.seo_allow_robots == '1' %}checked{% endif %} value="1">
+                                                    <label class="form-check-label" for="robotsTxt">
+                                                        Permitir rastreamento dos motores de busca
+                                                    </label>
+                                                </div>
+                                                <button type="button" onclick="saveSiteSettings('seoSettingsForm')" class="btn btn-primary">
+                                                    <i class="bi bi-check-lg"></i> Salvar SEO
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Social Media Settings -->
+                        <div class="tab-pane fade" id="social" role="tabpanel">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6 class="mb-0">Integração com Redes Sociais</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <form id="socialSettingsForm">
+                                                <div class="mb-3">
+                                                    <label class="form-label">
+                                                        <i class="bi bi-facebook text-primary"></i> Facebook
+                                                    </label>
+                                                    <input type="url" class="form-control" name="social_facebook" value="{{ settings.social_facebook ?? '' }}" placeholder="https://facebook.com/saeldauto">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">
+                                                        <i class="bi bi-instagram text-danger"></i> Instagram
+                                                    </label>
+                                                    <input type="url" class="form-control" name="social_instagram" value="{{ settings.social_instagram ?? '' }}" placeholder="https://instagram.com/saeldauto">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">
+                                                        <i class="bi bi-twitter text-info"></i> Twitter/X
+                                                    </label>
+                                                    <input type="url" class="form-control" name="social_twitter" value="{{ settings.social_twitter ?? '' }}" placeholder="https://twitter.com/saeldauto">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">
+                                                        <i class="bi bi-youtube text-danger"></i> YouTube
+                                                    </label>
+                                                    <input type="url" class="form-control" name="social_youtube" value="{{ settings.social_youtube ?? '' }}" placeholder="https://youtube.com/saeldauto">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">
+                                                        <i class="bi bi-whatsapp text-success"></i> WhatsApp
+                                                    </label>
+                                                    <input type="tel" class="form-control" name="social_whatsapp" value="{{ settings.social_whatsapp ?? '' }}" placeholder="(+244) 936145154">
+                                                </div>
+                                                <div class="form-check mb-3">
+                                                    <input class="form-check-input" type="checkbox" name="social_share_buttons" id="shareButtons" {% if settings.social_share_buttons == '1' %}checked{% endif %} value="1">
+                                                    <label class="form-check-label" for="shareButtons">
+                                                        Mostrar botões de compartilhamento
+                                                    </label>
+                                                </div>
+                                                <button type="button" onclick="saveSiteSettings('socialSettingsForm')" class="btn btn-primary">
+                                                    <i class="bi bi-check-lg"></i> Salvar Redes Sociais
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Integrations -->
+                        <div class="tab-pane fade" id="integrations" role="tabpanel">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h6 class="mb-0">Integrações Disponíveis</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <form id="integrationSettingsForm">
+                                                <div class="row g-3">
+                                                    <div class="col-md-6">
+                                                        <div class="card border">
+                                                            <div class="card-body">
+                                                                <h6 class="card-title">Google Maps</h6>
+                                                                <p class="text-muted small">Integrar mapa de localização</p>
+                                                                <div class="mb-2">
+                                                                    <input type="text" class="form-control form-control-sm" name="integration_google_maps_api" value="{{ settings.integration_google_maps_api ?? '' }}" placeholder="API Key">
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="integration_google_maps_enabled" id="googleMapsEnabled" {% if settings.integration_google_maps_enabled == '1' %}checked{% endif %} value="1">
+                                                                    <label class="form-check-label small" for="googleMapsEnabled">
+                                                                        Ativar
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="card border">
+                                                            <div class="card-body">
+                                                                <h6 class="card-title">Stripe / PayPal</h6>
+                                                                <p class="text-muted small">Pagamento online</p>
+                                                                <div class="mb-2">
+                                                                    <input type="text" class="form-control form-control-sm" name="integration_payment_api" value="{{ settings.integration_payment_api ?? '' }}" placeholder="API Key">
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="integration_payment_enabled" id="paymentEnabled" {% if settings.integration_payment_enabled == '1' %}checked{% endif %} value="1">
+                                                                    <label class="form-check-label small" for="paymentEnabled">
+                                                                        Ativar
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="card border">
+                                                            <div class="card-body">
+                                                                <h6 class="card-title">Mailchimp</h6>
+                                                                <p class="text-muted small">Email Marketing</p>
+                                                                <div class="mb-2">
+                                                                    <input type="text" class="form-control form-control-sm" name="integration_mailchimp_api" value="{{ settings.integration_mailchimp_api ?? '' }}" placeholder="API Key">
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="integration_mailchimp_enabled" id="mailchimpEnabled" {% if settings.integration_mailchimp_enabled == '1' %}checked{% endif %} value="1">
+                                                                    <label class="form-check-label small" for="mailchimpEnabled">
+                                                                        Ativar
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="card border">
+                                                            <div class="card-body">
+                                                                <h6 class="card-title">Chatbot</h6>
+                                                                <p class="text-muted small">Atendimento automático</p>
+                                                                <div class="mb-2">
+                                                                    <input type="text" class="form-control form-control-sm" name="integration_chatbot_api" value="{{ settings.integration_chatbot_api ?? '' }}" placeholder="API Key">
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="integration_chatbot_enabled" id="chatbotEnabled" {% if settings.integration_chatbot_enabled == '1' %}checked{% endif %} value="1">
+                                                                    <label class="form-check-label small" for="chatbotEnabled">
+                                                                        Ativar
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-3">
+                                                    <button type="button" onclick="saveSiteSettings('integrationSettingsForm')" class="btn btn-primary">
+                                                        <i class="bi bi-check-lg"></i> Salvar Integrações
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/app.js"></script>
+{% endblock %}  

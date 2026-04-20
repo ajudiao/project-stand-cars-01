@@ -1,0 +1,188 @@
+{% extends "layouts/admin.twig" %}
+    {% block content %}
+
+
+        <div class="main-content">
+                        <main class="page-content">
+                <div class="container-fluid">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h2>Configurações</h2>
+                            <p class="text-muted">Gerencie as configurações do seu sistema</p>
+                        </div>
+                    </div>
+
+                    <div class="row g-4">
+
+                        <!-- Settings Content -->
+                        <div class="col-lg-100">
+                            <!-- General Settings -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="bi bi-gear"></i> Configurações Gerais
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-4">
+                                        <label class="form-label">Idioma</label>
+                                        <select class="form-select" onchange="saveSetting('language', this.value)">
+                                            <option value="pt" selected>Português (Brasil)</option>
+                                            <option value="en">English</option>
+                                            <option value="es">Español</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Moeda</label>
+                                        <select class="form-select" onchange="saveSetting('currency', this.value)">
+                                            <option value="BRL" selected>Real (R$)</option>
+                                            <option value="USD">Dólar (US$)</option>
+                                            <option value="EUR">Euro (€)</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Timezone</label>
+                                        <select class="form-select" onchange="saveSetting('timezone', this.value)">
+                                            <option value="America/Sao_Paulo" selected>Brasília (UTC-3)</option>
+                                            <option value="America/New_York">Nova York (UTC-5)</option>
+                                            <option value="Europe/London">Londres (UTC+0)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="maintenanceMode" onchange="saveSetting('maintenance', this.checked)">
+                                        <label class="form-check-label" for="maintenanceMode">
+                                            Modo de Manutenção
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Notification Settings -->
+                            <div class="card mt-4">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="bi bi-bell"></i> Notificações
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="newVehicles" checked onchange="saveSetting('notif_vehicles', this.checked)">
+                                        <label class="form-check-label" for="newVehicles">
+                                            Novo automóvel adicionado
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="newSales" checked onchange="saveSetting('notif_sales', this.checked)">
+                                        <label class="form-check-label" for="newSales">
+                                            Nova venda realizada
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="newClients" checked onchange="saveSetting('notif_clients', this.checked)">
+                                        <label class="form-check-label" for="newClients">
+                                            Novo cliente cadastrado
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="emailNotif" checked onchange="saveSetting('email_notif', this.checked)">
+                                        <label class="form-check-label" for="emailNotif">
+                                            Receber notificações por email
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Integration Settings -->
+                            <div class="card mt-4">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="bi bi-plug"></i> Integrações
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6>WhatsApp</h6>
+                                                <small class="text-muted">Integre WhatsApp para melhor comunicação</small>
+                                            </div>
+                                            <button class="btn btn-outline-primary btn-sm">Conectar</button>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6>Email Marketing</h6>
+                                                <small class="text-muted">Campanhas de email para clientes</small>
+                                            </div>
+                                            <button class="btn btn-outline-primary btn-sm">Conectar</button>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6>Google Analytics</h6>
+                                                <small class="text-muted">Rastreie visitantes e conversões</small>
+                                            </div>
+                                            <button class="btn btn-outline-primary btn-sm">Conectar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Backup Settings -->
+                            <div class="card mt-4">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="bi bi-cloud-check"></i> Backup e Dados
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-4">
+                                        <h6>Último Backup</h6>
+                                        <p class="text-muted">15/02/2024 às 14:30</p>
+                                        <button class="btn btn-primary btn-sm" onclick="backupNow()">
+                                            <i class="bi bi-cloud-upload"></i> Fazer Backup Agora
+                                        </button>
+                                    </div>
+                                    <hr>
+                                    <div>
+                                        <h6>Exportar Dados</h6>
+                                        <p class="text-muted">Exporte todos os seus dados em CSV</p>
+                                        <button class="btn btn-secondary btn-sm" onclick="exportData()">
+                                            <i class="bi bi-download"></i> Exportar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Danger Zone -->
+                            <div class="card mt-4 border-danger">
+                                <div class="card-header bg-danger text-white">
+                                    <h5 class="card-title mb-0">
+                                        <i class="bi bi-exclamation-triangle"></i> Zona de Perigo
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="text-muted">Ações irreversíveis. Use com cuidado!</p>
+                                    <button class="btn btn-outline-danger btn-sm" onclick="deleteAccount()">
+                                        <i class="bi bi-trash"></i> Excluir Conta
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Save Button -->
+                            <div class="mt-4">
+                                <button class="btn btn-primary" onclick="saveAllSettings()">
+                                    <i class="bi bi-check-circle"></i> Salvar Configurações
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+{% endblock %}

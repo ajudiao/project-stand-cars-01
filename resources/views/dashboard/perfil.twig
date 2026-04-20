@@ -1,0 +1,234 @@
+{% extends "layouts/admin.twig" %}
+    {% block content %}
+
+        <div class="main-content">
+                        <main class="page-content">
+                <div class="container-fluid">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h2>Meu Perfil</h2>
+                            <p class="text-muted">Gerencie suas informações pessoais</p>
+                        </div>
+                    </div>
+
+                    <div class="row g-4">
+                        <!-- Profile Info -->
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <img src="https://via.placeholder.com/100" class="rounded-circle mb-3" alt="Avatar" style="width: 100px; height: 100px; object-fit: cover;">
+                                    <h5>{{ user.name }}</h5>
+                                    <p class="text-muted">Gerente da Stand</p>
+                                    <button class="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                                        <i class="bi bi-pencil"></i> Editar Perfil
+                                    </button>
+                                    <button class="btn btn-secondary btn-sm w-100 mt-2">
+                                        <i class="bi bi-cloud-upload"></i> Alterar Foto
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="card mt-4">
+                                <div class="card-body">
+                                    <h6>Informações de Contato</h6>
+                                    <div class="list-group list-group-flush">
+                                        <div class="list-group-item px-0 py-2">
+                                            <small class="text-muted">Email</small><br>
+                                            <span>joao.silva@autovendas.com</span>
+                                        </div>
+                                        <div class="list-group-item px-0 py-2">
+                                            <small class="text-muted">Telefone</small><br>
+                                            <span>(+244) 987653321</span>
+                                        </div>
+                                        <div class="list-group-item px-0 py-2">
+                                            <small class="text-muted">Data de Registro</small><br>
+                                            <span>15/01/2023</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile Details -->
+                        <div class="col-lg-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Informações da Stand</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-4">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Nome da Stand</label>
+                                            <input type="text" class="form-control" value="AutoVendas Premium" disabled>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">NIF</label>
+                                            <input type="text" class="form-control" value="12.345.678/0001-00" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Telefone da Stand</label>
+                                            <input type="text" class="form-control" value="(+244) 936145154" disabled>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Email da Stand</label>
+                                            <input type="text" class="form-control" value="saeldauto@gmail.com" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <label class="form-label">Endereço</label>
+                                            <input type="text" class="form-control" value="Município do Cazenga - Luanda, RJ" disabled>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editStandModal">
+                                        <i class="bi bi-pencil"></i> Editar Informações da Stand
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Security Section -->
+                            <div class="card mt-4">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Segurança</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Senha</label>
+                                        <input type="password" class="form-control" value="••••••••" disabled>
+                                        <button class="btn btn-secondary btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                                            <i class="bi bi-key"></i> Alterar Senha
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Autenticação em Dois Fatores</label>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge bg-warning">Desativada</span>
+                                            <button class="btn btn-secondary btn-sm">
+                                                <i class="bi bi-shield-check"></i> Ativar 2FA
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Perfil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Nome Completo</label>
+                            <input type="text" class="form-control" value="João Silva">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" value="joao.silva@autovendas.com">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Telefone</label>
+                            <input type="tel" class="form-control" value="(21) 98765-4321">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Cargo</label>
+                            <input type="text" class="form-control" value="Gerente">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="saveProfile()">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Stand Modal -->
+    <div class="modal fade" id="editStandModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Informações da Stand</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nome</label>
+                                <input type="text" class="form-control" value="AutoVendas Premium">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">NIF</label>
+                                <input type="text" class="form-control" value="12.345.678/0001-00">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Telefone</label>
+                                <input type="tel" class="form-control" value="(+244) 936145154">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" value="saeldauto@gmail.com">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Endereço</label>
+                            <input type="text" class="form-control" value="Cazenga. Rua Principal, 1000 - Luanda">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="saveStand()">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Alterar Senha</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Senha Atual</label>
+                            <input type="password" class="form-control" placeholder="Digite sua senha atual">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nova Senha</label>
+                            <input type="password" class="form-control" placeholder="Digite sua nova senha">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Confirmar Senha</label>
+                            <input type="password" class="form-control" placeholder="Confirme sua nova senha">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="changePassword()">Alterar Senha</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,87 @@
+<?php
+
+namespace App\Core;
+
+use App\Helpers\Helpers;
+use Twig\Loader\FilesystemLoader;
+use Twig\Environment;
+use Twig\TwigFunction;
+
+class View
+{
+    private static $twig;
+
+    private static function init()
+    {
+        if (self::$twig === null) {
+
+            $loader = new FilesystemLoader(BASE_PATH . '/resources/views');
+
+            self::$twig = new Environment($loader, [
+                'cache' => false,
+                'debug' => true
+            ]);
+
+            /*
+            |--------------------------------------------------------------------------
+            | Variáveis globais
+            |--------------------------------------------------------------------------
+            */
+            self::$twig->addGlobal('app_name', APP_NAME);
+            self::$twig->addGlobal('base_url', URL_DESENVOLVIMENTO);
+            self::$twig->addGlobal('companyLogo', 'https://thumbs.dreamstime.com/z/o-projeto-do-logotipo-do-carro-da-auto-loja-com-conceito-ostenta-silhueta-do-ve%C3%ADculo-86246431.jpg?ct=jpeg');
+            self::$twig->addGlobal('flashMessage', Helpers::getFlash());
+            self::$twig->addGlobal('currentPath', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+
+            /*
+            |--------------------------------------------------------------------------
+            | Funções
+            |--------------------------------------------------------------------------
+            */
+            // Caminhos para assets estáticos
+            self::$twig->addFunction(
+                new TwigFunction('asset', function ($path) {
+                    return '/assets/images/' . ltrim($path, '/');
+                })
+            );
+
+            // URL base do sistema
+            self::$twig->addFunction(
+                new TwigFunction('url', function ($path = '') {
+                    return '/' . ltrim($path, '/');
+                })
+            );
+
+            // Caminho completo de imagens de veículos
+            self::$twig->addFunction(
+                new TwigFunction('carImage', function (?string $filename) {
+                    $uploadPath = '/uploads/cars/'; // URL pública para navegador
+                    $filePath = BASE_PATH . '/public/uploads/cars/' . $filename; // caminho real no servidor
+
+                    if ($filename && file_exists($filePath)) {
+                        return $uploadPath . ltrim($filename, '/');
+                    }
+
+                    // Fallback caso não exista imagem
+                    return 'https://via.placeholder.com/80x60?text=Carro';
+                })
+            );
+
+            // Notificações e usuário global para o header
+            $notifications = (new \App\Repositories\NotificationRepository())->getNotifications(5);
+            self::$twig->addGlobal('notifications', $notifications);
+            self::$twig->addGlobal('notificationsCount', count($notifications));
+            self::$twig->addGlobal('userAvatar', 'https://i.pravatar.cc/50?img=12');
+            self::$twig->addGlobal('userName', 'Administrador');
+        }
+
+        return self::$twig;
+    }
+    
+    public static function render(string $template, array $data = [])
+    {
+        $twig = self::init();
+
+        echo $twig->render($template . '.twig', $data);
+    }
+}
