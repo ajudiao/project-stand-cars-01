@@ -132,7 +132,7 @@ class NotificationRepository
                 'message' => sprintf('%s %s (%s)', $row['marca'] ?? 'Marca', $row['modelo'] ?? 'Modelo', $row['ano'] ?? ''),
                 'created_at' => $row['created_at'],
                 'timeAgo' => $this->formatTimeAgo($row['created_at']),
-                'url' => '/admin/veiculos/show/' . $row['id'],
+                'url' => '/admin/automoveis/show/' . $row['id'],
                 'icon' => 'bi bi-car-front',
                 'badge' => 'primary',
             ];

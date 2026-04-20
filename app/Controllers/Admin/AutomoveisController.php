@@ -49,6 +49,7 @@ class AutomoveisController extends Controller
             echo "Modelo e preço são obrigatórios.";
             return;
         }
+
         if (!is_numeric($data['ano']) || $data['ano'] < 1900 || $data['ano'] > date('Y') + 1) {
             echo "Ano inválido.";
             return;
@@ -82,7 +83,7 @@ class AutomoveisController extends Controller
         // --------------------------
         // REDIRECT
         // --------------------------
-        header('Location: /admin/veiculos');
+        header('Location: /admin/automoveis');
         exit;
     }
 
@@ -153,7 +154,7 @@ class AutomoveisController extends Controller
             return;
         }
         if ($this->carRepo->delete($id)) {
-            header("Location: /admin/veiculos/");
+            header("Location: /admin/automoveis/");
             exit;
         } else {
             echo "Veiculo nao encontrado";
@@ -181,7 +182,7 @@ class AutomoveisController extends Controller
         // --------------------------
         // RETORNAR VIEW
         // --------------------------
-        $this->view('dashboard/veiculos', [
+        $this->view('dashboard/automoveis', [
             'veiculos'   => $veiculos,
             'marcas'     => $marcas,
             'categorias' => $categorias,

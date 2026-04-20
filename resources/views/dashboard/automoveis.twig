@@ -26,7 +26,7 @@
 
                             <!-- Filters -->
                             <div class="card card-body mb-4 border-0 shadow-sm">
-                                <form action="/admin/veiculos/busca/" method="get" class="row g-3 align-items-end">
+                                <form action="/admin/automoveis/busca/" method="get" class="row g-3 align-items-end">
                                     <!-- BUSCA -->
                                     <div class="col-md-4 col-lg-4">
                                         <label class="form-label small fw-bold">
@@ -160,11 +160,11 @@
                                                                     </td>
                                                                     <td>
                                                                         <div class="btn-group btn-group-sm" role="group">
-                                                                            <a href="/admin/veiculos/show/{{ veiculo.id }}" class="btn btn-outline-info" title="Ver Detalhes">
+                                                                            <a href="/admin/automoveis/show/{{ veiculo.id }}" class="btn btn-outline-info" title="Ver Detalhes">
                                                                                 <i class="bi bi-eye"></i>
                                                                             </a>
                                                                         </button>
-                                                                        <a href="/admin/veiculos/delete/{{ veiculo.id }}" class="btn btn-outline-danger" onclick="return confirm('Tem certeza que deseja apagar este veículo?')">
+                                                                        <a href="/admin/automoveis/delete/{{ veiculo.id }}" class="btn btn-outline-danger" onclick="return confirm('Tem certeza que deseja apagar este veículo?')">
                                                                             <i class="bi bi-trash"></i>
                                                                         </a>
                                                                     </div>
@@ -196,7 +196,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="/admin/veiculos" method="POST" enctype="multipart/form-data">
+                                            <form action="/admin/automoveis" method="POST" enctype="multipart/form-data">
 
                                                 <div class="row">
 

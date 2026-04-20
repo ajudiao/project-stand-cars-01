@@ -67,7 +67,7 @@ Router::group([
     // VEÍCULOS (REST)
     //
     Router::get('automoveis', 'AutomoveisController@index');          // listar
-    Router::get('/automoveis/create', 'AutomoveisController@create');  // form (opcional)
+    Router::post('/automoveis/create', 'AutomoveisController@create');  // form (opcional)
     Router::post('/automoveis/', 'AutomoveisController@store');         // salvar
     Router::get('/automoveis/show/{id}', 'AutomoveisController@show');      // detalhes
     Router::get('/automoveis/{id}/edit', 'AutomoveisController@edit'); // editar form

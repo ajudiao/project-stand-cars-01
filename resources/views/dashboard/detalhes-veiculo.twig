@@ -14,7 +14,7 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="/admin/veiculos/">
+                                <a href="/admin/automoveis/">
                                     Automóveis
                                 </a>
                             </li>
@@ -229,7 +229,7 @@
 
                                             <!-- EDIÇÃO -->
                                             <div id="preco-edit" class="d-none">
-                                                <form method="POST" action="/admin/veiculos/update/{{ veiculo.id }}">
+                                                <form method="POST" action="/admin/automoveis/update/{{ veiculo.id }}">
                                                         <input type="number" name="preco" class="form-control mb-2" value="{{ veiculo.preco }}" required>
 
                                                             <div class="d-flex gap-2">
@@ -279,7 +279,7 @@
 
                                                     <!-- EDIÇÃO -->
                                                     <div id="status-edit" class="d-none">
-                                                        <form method="POST" action="/admin/veiculos/update/{{ veiculo.id }}">
+                                                        <form method="POST" action="/admin/automoveis/update/{{ veiculo.id }}">
                                                             <input type="hidden" name="id" value="{{ veiculo.id }}">
 
                                                                 <select name="status" class="form-control mb-2" required>
@@ -459,7 +459,7 @@
                                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        <form id="editVehicleForm" action="/admin/veiculos/update/{{ veiculo.id }}" method="POST" enctype="multipart/form-data">
+                                                                        <form id="editVehicleForm" action="/admin/automoveis/update/{{ veiculo.id }}" method="POST" enctype="multipart/form-data">
                                                                             <div class="row">
                                                                                 <div class="col-md-6 mb-3">
 
