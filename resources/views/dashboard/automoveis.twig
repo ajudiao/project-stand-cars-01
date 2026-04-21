@@ -94,9 +94,6 @@
                                         <table class="table mb-0">
                                             <thead>
                                                 <tr>
-                                                     <th>
-                                                        Codigo
-                                                    </th>
                                                     <th style="width: 100px;">
                                                         Foto
                                                     </th>
@@ -123,10 +120,6 @@
                                                     {% for veiculo in veiculos %}
 
                                                         <tr>
-                                                            <td>
-                                                                {{ veiculo.id }}
-                                                            </td>
-                                                            
                                                             <td>
                                                                 <!-- Imagem principal do veículo -->
                                                                 <img src="{{ carImage(veiculo.imagens[0] ?? 'default.jpg') }}" alt="{{ veiculo.modelo }}" class="rounded" style="width: 80px; height: 60px; object-fit: cover;"></td>
