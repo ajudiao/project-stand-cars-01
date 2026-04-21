@@ -17,10 +17,17 @@
                                     Controle de usuários administrativos
                                 </p>
                             </div>
+                            {% if isAdmin %}
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
                                 <i class="bi bi-plus-circle"></i>
                                 Adicionar Usuário
                             </button>
+                            {% else %}
+                            <button class="btn btn-secondary disabled" disabled>
+                                <i class="bi bi-plus-circle"></i>
+                                Adicionar Usuário
+                            </button>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -55,12 +62,21 @@
                                     <td>{{ usuario.created_at | date('d/m/Y H:i') }}</td>
                                     <td>
                                         <div class="btn-group btn-group-sm" role="group">
+                                            {% if isAdmin %}
                                             <button class="btn btn-outline-info" title="Editar" data-bs-toggle="modal" data-bs-target="#editUserModal" onclick="editUser({{ usuario.id }}, '{{ usuario.nome }}', '{{ usuario.email }}', '{{ usuario.telefone }}', '{{ usuario.perfil }}', '{{ usuario.foto }}')">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
                                             <a href="/admin/usuarios/delete/{{ usuario.id }}" class="btn btn-outline-danger" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir este usuário?')">
                                                 <i class="bi bi-trash"></i>
                                             </a>
+                                            {% else %}
+                                            <button class="btn btn-outline-secondary disabled" disabled title="Somente administrador pode editar">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                            <a href="javascript:void(0);" class="btn btn-outline-secondary disabled" aria-disabled="true" title="Somente administrador pode excluir">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                            {% endif %}
                                         </div>
                                     </td>
                                 </tr>

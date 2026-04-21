@@ -114,10 +114,15 @@
                                                                 <a href="/admin/clientes/show/{{ cliente.id }}" class="btn btn-outline-info" title="Ver Detalhes">
                                                                     <i class="bi bi-eye"></i>
                                                                 </a>
-                                                               
+                                                               {% if isAdmin %}
                                                                <a href="/admin/clientes/delete/{{ cliente.id }}" class="btn btn-outline-danger" onclick="return confirm('Tem certeza que deseja apagar este cliente?')">
                                                                     <i class="bi bi-trash"></i>
                                                                 </a>
+                                                               {% else %}
+                                                               <a href="javascript:void(0);" class="btn btn-outline-secondary disabled" aria-disabled="true" title="Somente administrador pode excluir">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </a>
+                                                               {% endif %}
                                                             </div>
                                                         </td>
                                                     </tr>

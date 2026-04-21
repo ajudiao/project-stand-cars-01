@@ -29,7 +29,7 @@ class View
             */
             self::$twig->addGlobal('app_name', APP_NAME);
             self::$twig->addGlobal('base_url', URL_DESENVOLVIMENTO);
-            self::$twig->addGlobal('companyLogo', 'https://thumbs.dreamstime.com/z/o-projeto-do-logotipo-do-carro-da-auto-loja-com-conceito-ostenta-silhueta-do-ve%C3%ADculo-86246431.jpg?ct=jpeg');
+            self::$twig->addGlobal('companyLogo', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&h=80&fit=crop&crop=center');
             self::$twig->addGlobal('flashMessage', Helpers::getFlash());
             self::$twig->addGlobal('currentPath', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 
@@ -88,6 +88,8 @@ class View
             self::$twig->addGlobal('notificationsCount', count($notifications));
             self::$twig->addGlobal('userAvatar', isset($_SESSION['user_foto']) ? '/uploads/users/' . $_SESSION['user_foto'] : 'https://i.pravatar.cc/50?img=12');
             self::$twig->addGlobal('userName', $_SESSION['user_nome'] ?? 'Administrador');
+            self::$twig->addGlobal('userPerfil', $_SESSION['user_perfil'] ?? '');
+            self::$twig->addGlobal('isAdmin', isset($_SESSION['user_perfil']) && $_SESSION['user_perfil'] === 'Administrador');
             self::$twig->addGlobal('currentPath', $_SERVER['REQUEST_URI'] ?? '/');
 
             // Configurações do site

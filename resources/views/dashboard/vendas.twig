@@ -163,12 +163,15 @@
                 <a href="/admin/vendas/show/{{ venda.id }}" class="btn btn-sm btn-outline-info">
                     <i class="bi bi-eye"></i>
                 </a>
-
-                <a href="/admin/vendas/delete/{{ venda.id }}" 
-                class="btn btn-sm btn-outline-danger"
-                onclick="return confirm('Tem certeza que deseja excluir esta venda?')">
+                {% if isAdmin %}
+                <a href="/admin/vendas/delete/{{ venda.id }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Tem certeza que deseja excluir esta venda?')">
                     <i class="bi bi-trash"></i>
                 </a>
+                {% else %}
+                <a href="javascript:void(0);" class="btn btn-sm btn-outline-secondary disabled" aria-disabled="true" title="Somente administrador pode excluir">
+                    <i class="bi bi-trash"></i>
+                </a>
+                {% endif %}
             </td>
         
         </tr>

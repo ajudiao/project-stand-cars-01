@@ -235,9 +235,15 @@
                                         <a href="{{ url('/admin/vendas') }}" class="btn btn-outline-secondary">
                                             <i class="bi bi-arrow-left"></i> Voltar à Lista
                                         </a>
+                                        {% if isAdmin %}
                                         <button class="btn btn-outline-danger" onclick="deleteSale({{ venda.id }})">
                                             <i class="bi bi-trash"></i> Deletar Venda
                                         </button>
+                                        {% else %}
+                                        <button class="btn btn-outline-secondary disabled" disabled title="Somente administrador pode excluir">
+                                            <i class="bi bi-trash"></i> Deletar Venda
+                                        </button>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

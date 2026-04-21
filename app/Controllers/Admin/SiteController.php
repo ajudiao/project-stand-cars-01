@@ -21,8 +21,18 @@ class SiteController extends Controller
         ]);
     }
 
+    private function authorizeAdmin()
+    {
+        if (!isset($_SESSION['user_perfil']) || $_SESSION['user_perfil'] !== 'Administrador') {
+            header('Location: /admin');
+            exit;
+        }
+    }
+
     public function configuracoes()
     {
+        $this->authorizeAdmin();
+
         $settings = $this->settingRepo->getAll();
 
         if (empty($settings)) {
@@ -50,6 +60,8 @@ class SiteController extends Controller
 
     public function salvarConfiguracao()
     {
+        $this->authorizeAdmin();
+
         // Verificar se é JSON
         $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
         if (strpos($contentType, 'application/json') !== false) {
@@ -61,21 +73,45 @@ class SiteController extends Controller
         // Remover campos que não são da tabela
         unset($data['_token']); // se houver
 
-        if ($this->settingRepo->update($data)) {
+        // Validar dados não vazios
+        if (empty($data)) {
             if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
-                // AJAX response
                 header('Content-Type: application/json');
-                echo json_encode(['success' => true, 'message' => 'Configurações salvas com sucesso.']);
+                echo json_encode(['success' => false, 'message' => 'Nenhum dado foi enviado.']);
             } else {
-                \App\Helpers\Helpers::setFlash('success', 'Configurações salvas com sucesso.');
+                \App\Helpers\Helpers::setFlash('error', 'Nenhum dado foi enviado.');
                 header('Location: /admin/website/configuracoes');
             }
-        } else {
+            exit;
+        }
+
+        // Tentar atualizar
+        try {
+            if ($this->settingRepo->update($data)) {
+                if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+                    // AJAX response
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => true, 'message' => 'Configurações salvas com sucesso.']);
+                } else {
+                    \App\Helpers\Helpers::setFlash('success', 'Configurações salvas com sucesso.');
+                    header('Location: /admin/website/configuracoes');
+                }
+            } else {
+                if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => false, 'message' => 'Erro ao atualizar configurações no banco de dados.']);
+                } else {
+                    \App\Helpers\Helpers::setFlash('error', 'Erro ao salvar configurações.');
+                    header('Location: /admin/website/configuracoes');
+                }
+            }
+        } catch (\Exception $e) {
+            error_log('Erro ao salvar configurações: ' . $e->getMessage());
             if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
                 header('Content-Type: application/json');
-                echo json_encode(['success' => false, 'message' => 'Erro ao salvar configurações.']);
+                echo json_encode(['success' => false, 'message' => 'Erro: ' . $e->getMessage()]);
             } else {
-                \App\Helpers\Helpers::setFlash('error', 'Erro ao salvar configurações.');
+                \App\Helpers\Helpers::setFlash('error', 'Erro ao salvar: ' . $e->getMessage());
                 header('Location: /admin/website/configuracoes');
             }
         }

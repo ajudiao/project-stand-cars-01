@@ -122,9 +122,13 @@ Router::group([
     Router::get('/usuarios/delete/{id}', 'UsuariosController@delete');
 
     Router::get('/configuracoes', 'DashboardController@configuracoes');
+    Router::post('/configuracoes/backup', 'DashboardController@backup');
+    Router::get('/configuracoes/export', 'DashboardController@exportCsv');
     Router::get('/website/configuracoes', 'SiteController@configuracoes');
     Router::post('/website/configuracoes/salvar', 'SiteController@salvarConfiguracao');
     Router::get('/perfil', 'PerfilController@index');
+    Router::post('/perfil/foto', 'PerfilController@updatePhoto');
+    Router::post('/perfil/senha', 'PerfilController@changePassword');
 
     //
     // RELATÓRIOS

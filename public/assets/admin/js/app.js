@@ -533,23 +533,42 @@ function saveSiteSettings(formId) {
     const formData = new FormData(form);
     const settings = {};
 
+    // Processar inputs normalmente
     formData.forEach((value, key) => {
         settings[key] = value;
     });
 
+    // Processar checkboxes (incluir como 0 se não estiverem marcados)
+    const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+        if (!settings.hasOwnProperty(checkbox.name)) {
+            settings[checkbox.name] = checkbox.checked ? '1' : '0';
+        }
+    });
+
+    // Debug
+    console.log('Dados enviados:', settings);
+
     // Enviar via AJAX
-    fetch('/website/configuracoes/salvar', {
+    fetch('/admin/website/configuracoes/salvar', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
         },
         body: JSON.stringify(settings)
     })
     .then(response => {
-        if (!response.ok) throw new Error('Erro ao salvar');
+        console.log('Response status:', response.status);
+        if (!response.ok) {
+            return response.text().then(text => {
+                throw new Error(`HTTP ${response.status}: ${text}`);
+            });
+        }
         return response.json();
     })
     .then(data => {
+        console.log('Response data:', data);
         if (data.success) {
             showNotification('Configurações salvas com sucesso!', 'success', 4000);
         } else {
@@ -558,7 +577,7 @@ function saveSiteSettings(formId) {
     })
     .catch(error => {
         console.error('Erro:', error);
-        showNotification('Erro ao salvar configurações', 'danger', 4000);
+        showNotification('Erro ao salvar configurações: ' + error.message, 'danger', 4000);
     });
 }
 

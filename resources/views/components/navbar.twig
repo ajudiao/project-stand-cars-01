@@ -75,6 +75,7 @@
                 </span>
             </a>
         </li>
+        {% if isAdmin %}
         <li>
             <a href="/admin/website/configuracoes" class="nav-link {% if currentPath starts with '/admin/website' %}active{% endif %}" data-page="configuracoes">
                 <i class="bi bi-globe"></i>
@@ -91,6 +92,7 @@
                 </span>
             </a>
         </li>
+        {% endif %}
         <li>
             <a href="/admin/logout" class="nav-link" onclick="logout()">
                 <i class="bi bi-box-arrow-right"></i>
