@@ -1,30 +1,41 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notícia - Saeld Auto</title>
-    <meta name="description" content="Leia o artigo completo">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="js/config.js"></script>
-</head>
-<body class="font-sans antialiased bg-background text-foreground">
-    <div id="navigation"></div>
-    
-    <main class="min-h-screen">
-        <div id="article-content" class="container mx-auto px-4 py-12">
-            <!-- Conteúdo será carregado pelo JavaScript -->
-            <div class="flex items-center justify-center py-20">
-                <div class="animate-spin h-12 w-12 rounded-full border-4 border-primary border-t-transparent"></div>
+{% extends "layouts/main.twig" %}
+
+{% block title %}{{ noticia.titulo }} - {{ settings.site_name }}{% endblock %}
+{% block description %}{{ noticia.resumo ?? noticia.titulo }}{% endblock %}
+
+{% block content %}
+
+    <!-- Cabeçalho -->
+    <section class="bg-gradient-to-br from-primary/10 via-background to-accent/5 px-4 py-12">
+        <div class="container mx-auto">
+            <div class="mx-auto max-w-4xl">
+                <div class="mb-4 flex items-center gap-2 text-sm text-muted-foreground">
+                    <time datetime="{{ noticia.data_publicacao }}">{{ noticia.data_publicacao | date('d/m/Y') }}</time>
+                    {% if noticia.autor %}
+                    <span>•</span>
+                    <span>{{ noticia.autor }}</span>
+                    {% endif %}
+                </div>
+                <h1 class="mb-4 text-4xl font-bold leading-tight lg:text-5xl">{{ noticia.titulo }}</h1>
+                {% if noticia.resumo %}
+                <p class="text-xl text-muted-foreground">{{ noticia.resumo }}</p>
+                {% endif %}
             </div>
         </div>
-    </main>
+    </section>
 
-    <div id="footer"></div>
+    <!-- Conteúdo da Notícia -->
+    <section class="px-4 py-12">
+        <div class="container mx-auto">
+            <div class="mx-auto max-w-4xl">
+                <div class="aspect-[16/9] mb-8 overflow-hidden rounded-2xl border border-border bg-muted">
+                    <img src="{% if noticia.imagem_capa %}/uploads/news/{{ noticia.imagem_capa }}{% else %}https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&h=450&fit=crop{% endif %}" alt="{{ noticia.titulo }}" class="h-full w-full object-cover">
+                </div>
+                <div class="prose prose-lg max-w-none">
+                    {{ noticia.conteudo | raw }}
+                </div>
+            </div>
+        </div>
+    </section>
 
-
-    <script src="js/data.js"></script>
-    <script src="js/noticia-detalhes.js"></script>
-</body>
-</html>
+{% endblock %}

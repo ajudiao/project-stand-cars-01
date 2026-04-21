@@ -67,6 +67,21 @@ class View
                 })
             );
 
+            // Caminho completo de imagens de carros
+            self::$twig->addFunction(
+                new TwigFunction('carImage', function (?string $filename) {
+                    $uploadPath = '/uploads/cars/'; // URL pública para navegador
+                    $filePath = BASE_PATH . '/public/uploads/cars/' . $filename; // caminho real no servidor
+
+                    if ($filename && file_exists($filePath)) {
+                        return $uploadPath . ltrim($filename, '/');
+                    }
+
+                    // Fallback caso não exista imagem
+                    return 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=400&h=300&fit=crop';
+                })
+            );
+
             // Notificações e usuário global para o header
             $notifications = (new \App\Repositories\NotificationRepository())->getNotifications(5);
             self::$twig->addGlobal('notifications', $notifications);

@@ -6,7 +6,7 @@
         <!-- Header -->
         <section class="bg-gradient-to-br from-primary/10 via-background to-accent/5 px-4 py-12">
             <div class="container mx-auto text-center">
-                <h1 class="mb-4 text-4xl font-bold lg:text-5xl">Sobre a Saeld Auto</h1>
+                <h1 class="mb-4 text-4xl font-bold lg:text-5xl">{{ settings.about_title ?? 'Sobre a Saeld Auto' }}</h1>
                 <p class="text-lg text-muted-foreground">Qualidade, segurança e confiabilidade no mercado automóvel desde 2017</p>
             </div>
         </section>
@@ -18,15 +18,7 @@
                     <div>
                         <h2 class="mb-6 text-3xl font-bold lg:text-4xl">Nossa História</h2>
                         <div class="space-y-4 text-lg leading-relaxed text-muted-foreground">
-                            <p>
-                                A empresa Saeld Auto atua no ramo de venda de automóveis, tendo como principal objetivo oferecer automóveis que atendam às necessidades e expectativas de seus clientes. Fundada no ano de 2017, a empresa está localizada na cidade de Luanda, no município do Cazenga, onde desenvolve suas atividades comerciais de forma contínua.
-                            </p>
-                            <p>
-                                A Saeld Auto tem como principal produto a comercialização de automóveis, buscando disponibilizar opções que aliem qualidade, segurança e confiabilidade. Seu público-alvo é composto predominantemente por pessoas físicas, que procuram soluções adequadas para mobilidade pessoal e familiar.
-                            </p>
-                            <p>
-                                Ao longo de sua atuação no mercado, a Saeld Auto vem se consolidando como uma empresa comprometida com a satisfação dos clientes, prezando pelo bom atendimento, transparência nas negociações e responsabilidade no exercício de suas atividades comerciais.
-                            </p>
+                            {{ settings.about_content | raw }}
                         </div>
                     </div>
                     <div class="relative">

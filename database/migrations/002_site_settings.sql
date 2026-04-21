@@ -29,6 +29,16 @@ CREATE TABLE IF NOT EXISTS site_settings (
   social_whatsapp VARCHAR(50) DEFAULT '',
   social_share_buttons TINYINT(1) DEFAULT 1,
 
+  -- Arquivos
+  logo_path VARCHAR(255) DEFAULT '',
+  favicon_path VARCHAR(255) DEFAULT '',
+
+  -- Conteúdo das Páginas
+  about_title VARCHAR(255) DEFAULT 'Sobre Nós',
+  about_content TEXT DEFAULT 'Somos uma concessionária de automóveis dedicada a oferecer os melhores veículos com qualidade e confiança.',
+  contact_title VARCHAR(255) DEFAULT 'Entre em Contato',
+  contact_content TEXT DEFAULT 'Estamos aqui para ajudar. Entre em contato conosco para mais informações.',
+
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
