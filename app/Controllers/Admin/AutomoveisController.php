@@ -21,14 +21,6 @@ class AutomoveisController extends Controller
         $veiculos = $this->carRepo->getAllWithImages(); // já traz imagens e foto principal
         $marcas = (new \App\Repositories\MarcaRepository())->getAll();
         $categorias = (new \App\Repositories\CategoriaRepository())->getAll();
-
-        /*
-        echo "<pre>";
-        var_dump($veiculos[1]->destaque);
-        var_dump(gettype($veiculos[1]->destaque));
-        echo "</pre>";
-        exit;
-        */
         
         $this->view('dashboard/automoveis', [
             'veiculos'   => $veiculos,   // Veículos com todas as imagens
