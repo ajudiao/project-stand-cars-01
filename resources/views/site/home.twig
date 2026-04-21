@@ -6,9 +6,10 @@
 {% block content %}
 
     <!-- Conteúdo Principal -->
+    <main class="min-h-screen pt-20">
     
     <!-- Secção Hero -->
-        <section class="relative overflow-hidden bg-gradient-to-br from-background via-background to-muted/30 px-4 py-20 lg:py-32">
+        <section class="animate-on-scroll opacity-0 translate-y-8 transition-all duration-700 relative overflow-hidden bg-gradient-to-br from-background via-background to-muted/30 px-4 py-20 lg:py-32">
             <div class="container mx-auto">
                 <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
                     <div class="flex flex-col justify-center">
@@ -51,7 +52,12 @@
                                     </svg>
                                 </a>
                             {% endif %}
-                            <a href="{{ url('veiculos') }}" class="inline-flex items-center justify-center rounded-lg border border-border bg-background px-6 py-3 text-base font-medium transition-colors hover:bg-muted">
+                            <a href="{{ url('veiculos') }}" class="inline-flex items-center justify-center rounded-lg border-2 border-accent bg-accent/10 px-6 py-3 text-base font-medium text-accent-foreground transition-all hover:bg-accent hover:text-accent-foreground hover:shadow-lg hover:scale-105">
+                                <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                </svg>
+                                Explorar Automóveis
+                            </a>
                                 <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                 </svg>
@@ -86,7 +92,7 @@
         </section>
 
     <!-- Secção de Estatísticas -->
-        <section class="border-y border-border bg-muted/30 px-4 py-12">
+        <section class="animate-on-scroll opacity-0 translate-y-8 transition-all duration-700 border-y border-border bg-muted/30 px-4 py-12">
             <div class="container mx-auto">
                 <div class="grid grid-cols-2 gap-8 lg:grid-cols-4">
                     <div class="text-center">
@@ -110,7 +116,7 @@
         </section>
 
     <!-- Veículos em Destaque -->
-        <section class="px-4 py-20">
+        <section class="animate-on-scroll opacity-0 translate-y-8 transition-all duration-700 px-4 py-20">
             <div class="container mx-auto">
                 <div class="mb-12 text-center">
                     <h2 class="mb-4 text-3xl font-bold lg:text-4xl">Automóveis em Destaque</h2>
@@ -164,7 +170,7 @@
         </section>
 
     <!-- CTA Escolha do Carro -->
-<section class="px-4 py-20">
+<section class="animate-on-scroll opacity-0 translate-y-8 transition-all duration-700 px-4 py-20">
     <div class="container mx-auto">
         <div class="overflow-hidden rounded-2xl border-2 border-primary/20 bg-gradient-to-br from-primary/5 via-background to-accent/5 p-8 lg:p-12">
             <div class="grid gap-8 lg:grid-cols-2 lg:gap-12">
@@ -186,11 +192,11 @@
                     </p>
 
                     <div class="flex flex-wrap gap-4">
-                        <a href="{{ url('veiculos') }}" class="inline-flex items-center justify-center rounded-lg bg-primary px-8 py-4 text-lg font-medium text-primary-foreground transition-colors hover:bg-primary/90">
+                        <a href="{{ url('veiculos') }}" class="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-primary to-primary/80 px-8 py-4 text-lg font-medium text-primary-foreground transition-all hover:from-primary/90 hover:to-primary/70 hover:shadow-lg hover:scale-105">
                             Ver Stock
                         </a>
 
-                        <a href="{{ url('contato') }}" class="inline-flex items-center justify-center rounded-lg border border-primary px-8 py-4 text-lg font-medium text-primary transition-colors hover:bg-primary/10">
+                        <a href="{{ url('contato') }}" class="inline-flex items-center justify-center rounded-lg border-2 border-primary bg-background px-8 py-4 text-lg font-medium text-primary transition-all hover:bg-primary hover:text-primary-foreground hover:shadow-lg hover:scale-105">
                             Falar com Vendedor
                         </a>
                     </div>
@@ -210,5 +216,29 @@
 
 
     
+
+    <script>
+        // Animação de entrada no scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.remove('opacity-0', 'translate-y-8');
+                        entry.target.classList.add('opacity-100', 'translate-y-0');
+                    }
+                });
+            }, observerOptions);
+
+            // Observar todos os elementos com a classe animate-on-scroll
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
 
 {% endblock %}
