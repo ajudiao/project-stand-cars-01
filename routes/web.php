@@ -113,6 +113,14 @@ Router::group([
     Router::get('/vendas/{id}/recibo', 'VendasController@receipt');
     Router::post('/vendas/update/{id}', 'VendasController@update');
 
+    //
+    // USUÁRIOS (REST)
+    //
+    Router::get('/usuarios', 'UsuariosController@index');
+    Router::post('/usuarios', 'UsuariosController@store');
+    Router::post('/usuarios/update/{id}', 'UsuariosController@update');
+    Router::get('/usuarios/delete/{id}', 'UsuariosController@delete');
+
     Router::get('/configuracoes', 'DashboardController@configuracoes');
     Router::get('/website/configuracoes', 'SiteController@configuracoes');
     Router::post('/website/configuracoes/salvar', 'SiteController@salvarConfiguracao');

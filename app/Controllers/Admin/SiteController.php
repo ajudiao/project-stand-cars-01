@@ -24,10 +24,10 @@ class SiteController extends Controller
     public function configuracoes()
     {
         $settings = $this->settingRepo->getAll();
-        
-        $data = [];
-        foreach ($settings as $setting) {
-            $data[$setting['key']] = $setting['value'];
+
+        if (empty($settings)) {
+            $this->settingRepo->createDefault();
+            $settings = $this->settingRepo->getAll();
         }
 
         // Verificar se é uma requisição AJAX
@@ -37,52 +37,48 @@ class SiteController extends Controller
         if ($isAjax) {
             // Retornar JSON para requisições AJAX
             header('Content-Type: application/json');
-            echo json_encode(['settings' => $data]);
+            echo json_encode(['settings' => $settings]);
             return;
         }
 
         // Renderizar view para requisições normais
         $this->view('dashboard/configuracoes-site', [
             'title' => 'Configurações do Site - ' . APP_NAME,
-            'settings' => $data,
+            'settings' => $settings,
         ]);
     }
 
     public function salvarConfiguracao()
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            http_response_code(405);
-            echo json_encode(['error' => 'Método não permitido']);
-            return;
+        // Verificar se é JSON
+        $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+        if (strpos($contentType, 'application/json') !== false) {
+            $data = json_decode(file_get_contents('php://input'), true);
+        } else {
+            $data = $_POST;
         }
 
-        // Ler JSON do corpo da requisição
-        $input = file_get_contents('php://input');
-        $data = json_decode($input, true);
+        // Remover campos que não são da tabela
+        unset($data['_token']); // se houver
 
-        if (!$data || !is_array($data)) {
-            http_response_code(400);
-            echo json_encode(['success' => false, 'message' => 'Dados inválidos']);
-            return;
-        }
-
-        try {
-            // Salvar cada configuração
-            foreach ($data as $key => $value) {
-                // Converter checkboxes vazios (unchecked) em 0
-                if ($value === 'on' || $value === '1') {
-                    $value = '1';
-                } elseif (empty($value) && isset($data[$key])) {
-                    $value = '0';
-                }
-                
-                $this->settingRepo->set($key, $value);
+        if ($this->settingRepo->update($data)) {
+            if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+                // AJAX response
+                header('Content-Type: application/json');
+                echo json_encode(['success' => true, 'message' => 'Configurações salvas com sucesso.']);
+            } else {
+                \App\Helpers\Helpers::setFlash('success', 'Configurações salvas com sucesso.');
+                header('Location: /admin/website/configuracoes');
             }
-
-            echo json_encode(['success' => true, 'message' => 'Configurações salvas com sucesso']);
-        } catch (\Exception $e) {
-            http_response_code(500);
-            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        } else {
+            if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'Erro ao salvar configurações.']);
+            } else {
+                \App\Helpers\Helpers::setFlash('error', 'Erro ao salvar configurações.');
+                header('Location: /admin/website/configuracoes');
+            }
         }
+        exit;
     }
 }

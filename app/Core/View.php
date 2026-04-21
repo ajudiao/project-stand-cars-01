@@ -52,18 +52,18 @@ class View
                 })
             );
 
-            // Caminho completo de imagens de veículos
+            // Caminho completo de imagens de usuários
             self::$twig->addFunction(
-                new TwigFunction('carImage', function (?string $filename) {
-                    $uploadPath = '/uploads/cars/'; // URL pública para navegador
-                    $filePath = BASE_PATH . '/public/uploads/cars/' . $filename; // caminho real no servidor
+                new TwigFunction('userImage', function (?string $filename) {
+                    $uploadPath = '/uploads/users/'; // URL pública para navegador
+                    $filePath = BASE_PATH . '/public/uploads/users/' . $filename; // caminho real no servidor
 
                     if ($filename && file_exists($filePath)) {
                         return $uploadPath . ltrim($filename, '/');
                     }
 
                     // Fallback caso não exista imagem
-                    return 'https://via.placeholder.com/80x60?text=Carro';
+                    return 'https://i.pravatar.cc/50?img=12';
                 })
             );
 
@@ -71,8 +71,13 @@ class View
             $notifications = (new \App\Repositories\NotificationRepository())->getNotifications(5);
             self::$twig->addGlobal('notifications', $notifications);
             self::$twig->addGlobal('notificationsCount', count($notifications));
-            self::$twig->addGlobal('userAvatar', 'https://i.pravatar.cc/50?img=12');
-            self::$twig->addGlobal('userName', 'Administrador');
+            self::$twig->addGlobal('userAvatar', isset($_SESSION['user_foto']) ? '/uploads/users/' . $_SESSION['user_foto'] : 'https://i.pravatar.cc/50?img=12');
+            self::$twig->addGlobal('userName', $_SESSION['user_nome'] ?? 'Administrador');
+            self::$twig->addGlobal('currentPath', $_SERVER['REQUEST_URI'] ?? '/');
+
+            // Configurações do site
+            $settings = (new \App\Repositories\SiteSettingRepository())->getAll();
+            self::$twig->addGlobal('settings', $settings);
         }
 
         return self::$twig;

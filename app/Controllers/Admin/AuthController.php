@@ -56,6 +56,7 @@ class AuthController extends Controller
         $_SESSION['user_id'] = $user->id;
         $_SESSION['user_nome'] = $user->nome;
         $_SESSION['user_perfil'] = $user->perfil;
+        $_SESSION['user_foto'] = $user->foto;
 
 
         header('Location: /admin');

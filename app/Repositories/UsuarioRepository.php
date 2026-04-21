@@ -34,9 +34,9 @@ class UsuarioRepository
     public function create(Usuario $usuario): int
     {
         $sql = "INSERT INTO usuarios (
-                    nome, email, telefone, senha, perfil, created_at
+                    nome, email, telefone, senha, perfil, created_at, foto
                 ) VALUES (
-                    :nome, :email, :telefone, :senha, :perfil, :created_at
+                    :nome, :email, :telefone, :senha, :perfil, :created_at, :foto
                 )";
 
         $stmt = $this->conn->prepare($sql);
@@ -46,7 +46,8 @@ class UsuarioRepository
             'telefone'   => $usuario->telefone,
             'senha'      => $usuario->senha,
             'perfil'     => $usuario->perfil,
-            'created_at' => $usuario->created_at
+            'created_at' => $usuario->created_at,
+            'foto'       => $usuario->foto
         ]);
 
         return (int)$this->conn->lastInsertId();
@@ -61,5 +62,62 @@ class UsuarioRepository
         $stmt->execute(['email' => $email]);
 
         return (int)$stmt->fetchColumn() > 0;
+    }
+
+    /**
+     * Buscar todos os usuários (admins)
+     */
+    public function getAll(): array
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM usuarios WHERE perfil IN ('Administrador', 'Gerente') ORDER BY created_at DESC");
+        $stmt->execute();
+
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $usuarios = [];
+
+        foreach ($data as $row) {
+            $usuarios[] = new Usuario($row);
+        }
+
+        return $usuarios;
+    }
+
+    /**
+     * Buscar usuário por ID
+     */
+    public function findById(int $id): ?Usuario
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM usuarios WHERE id = :id LIMIT 1");
+        $stmt->execute(['id' => $id]);
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $data ? new Usuario($data) : null;
+    }
+
+    /**
+     * Atualizar usuário
+     */
+    public function update(int $id, array $data): bool
+    {
+        $sql = "UPDATE usuarios SET
+                    nome = :nome,
+                    email = :email,
+                    telefone = :telefone,
+                    perfil = :perfil,
+                    senha = :senha,
+                    foto = :foto
+                WHERE id = :id";
+
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([
+            'id'       => $id,
+            'nome'     => $data['nome'],
+            'email'    => $data['email'],
+            'telefone' => $data['telefone'],
+            'perfil'   => $data['perfil'],
+            'senha'    => $data['senha'],
+            'foto'     => $data['foto']
+        ]);
     }
 }

@@ -16,35 +16,38 @@ class SiteSettingRepository
 
     public function getAll(): array
     {
-        $stmt = $this->conn->query('SELECT * FROM site_settings');
-        return $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
+        $stmt = $this->conn->query('SELECT * FROM site_settings LIMIT 1');
+        $row = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : [];
+        return $row ?: [];
     }
 
     public function get(string $key): ?string
     {
-        $stmt = $this->conn->prepare('SELECT value FROM site_settings WHERE `key` = :key LIMIT 1');
-        $stmt->execute(['key' => $key]);
+        $stmt = $this->conn->prepare('SELECT ' . $key . ' FROM site_settings LIMIT 1');
+        $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result['value'] ?? null;
+        return $result[$key] ?? null;
     }
 
-    public function set(string $key, ?string $value): bool
+    public function update(array $data): bool
     {
-        $stmt = $this->conn->prepare(
-            'INSERT INTO site_settings (`key`, `value`, `type`, updated_at) VALUES (:key, :value, :type, NOW())
-            ON DUPLICATE KEY UPDATE `value` = VALUES(`value`), `type` = VALUES(`type`), updated_at = NOW()'
-        );
+        $sets = [];
+        $params = [];
+        foreach ($data as $key => $value) {
+            $sets[] = $key . ' = :' . $key;
+            $params[$key] = $value;
+        }
+        $params['updated_at'] = date('Y-m-d H:i:s');
 
-        return $stmt->execute([
-            'key' => $key,
-            'value' => $value,
-            'type' => 'text',
-        ]);
+        $sql = 'UPDATE site_settings SET ' . implode(', ', $sets) . ', updated_at = :updated_at WHERE id = 1';
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute($params);
     }
 
-    public function delete(string $key): bool
+    public function createDefault(): bool
     {
-        $stmt = $this->conn->prepare('DELETE FROM site_settings WHERE `key` = :key');
-        return $stmt->execute(['key' => $key]);
+        $sql = 'INSERT INTO site_settings (id) VALUES (1) ON DUPLICATE KEY UPDATE id = 1';
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute();
     }
 }

@@ -1,5 +1,8 @@
 {% extends "layouts/main.twig" %}
 
+{% block title %}{{ settings.site_name ?? 'Saeld Auto' }} - {{ settings.site_tagline ?? 'Stand de Automóveis' }}{% endblock %}
+{% block description %}{{ settings.seo_description ?? 'Encontre o veículo perfeito' }}{% endblock %}
+
 {% block content %}
 
     <!-- Conteúdo Principal -->
@@ -19,14 +22,14 @@
                             {% if heroCar %}
                                 {{ heroCar.marca_nome }} {{ heroCar.modelo }}
                             {% else %}
-                                Encontre o automóvel perfeito na Saeld Auto
+                                {{ settings.site_name ?? 'Saeld Auto' }}
                             {% endif %}
                         </h1>
                         <p class="mb-8 text-lg leading-relaxed text-muted-foreground lg:text-xl">
                             {% if heroCar and heroCar.descricao %}
                                 {{ heroCar.descricao|slice(0, 160) }}...
                             {% else %}
-                                Oferecemos automóveis que aliam qualidade, segurança e confiabilidade em Luanda. Encontre a solução ideal para sua mobilidade pessoal e familiar.
+                                {{ settings.site_description ?? 'Oferecemos automóveis que aliam qualidade, segurança e confiabilidade. Encontre a solução ideal para sua mobilidade.' }}
                             {% endif %}
                         </p>
                         <div class="flex flex-col gap-4 sm:flex-row">
