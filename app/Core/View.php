@@ -28,8 +28,9 @@ class View
             |--------------------------------------------------------------------------
             */
             self::$twig->addGlobal('app_name', APP_NAME);
-            self::$twig->addGlobal('base_url', URL_DESENVOLVIMENTO);
-            self::$twig->addGlobal('companyLogo', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&h=80&fit=crop&crop=center');
+            self::$twig->addGlobal('base_url', URL_BASE);
+            self::$twig->addGlobal('companyLogo', URL_ASSETS_SITE . '/logotipo.png');
+            self::$twig->addGlobal('localImage', URL_ASSETS_SITE . '/local.png');
             self::$twig->addGlobal('flashMessage', Helpers::getFlash());
             self::$twig->addGlobal('currentPath', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 

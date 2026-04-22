@@ -98,8 +98,15 @@ class DashboardController extends Controller
             $filename = 'backup_' . $database . '_' . date('Y-m-d_H-i-s') . '.sql';
             $backupPath = $backupDir . $filename;
 
+            $mysqldump = trim(shell_exec('which mysqldump'));
+            if (empty($mysqldump)) {
+                throw new \Exception('mysqldump não encontrado no servidor.');
+            }
+
             $command = sprintf(
-                'mysqldump --user=%s --password=%s %s > %s',
+                '%s --host=%s --user=%s --password=%s --single-transaction --quick --skip-lock-tables %s > %s 2>&1',
+                escapeshellarg($mysqldump),
+                escapeshellarg(DB_HOST),
                 escapeshellarg(DB_USER),
                 escapeshellarg(DB_PASS),
                 escapeshellarg($database),
@@ -107,12 +114,13 @@ class DashboardController extends Controller
             );
 
             exec($command, $output, $returnVar);
+            $commandOutput = trim(implode("\n", $output));
 
             if ($returnVar === 0 && file_exists($backupPath)) {
                 header('Content-Type: application/json');
                 echo json_encode(['success' => true, 'message' => 'Backup criado com sucesso!', 'filename' => $filename]);
             } else {
-                throw new \Exception('Erro ao criar o backup.');
+                throw new \Exception('Erro ao criar o backup. ' . $commandOutput);
             }
         } catch (\Exception $e) {
             header('Content-Type: application/json');
@@ -167,4 +175,49 @@ class DashboardController extends Controller
         }
         exit;
     }
+
+    public function deleteAllData()
+    {
+        // Verificar se é administrador
+        if (!isset($_SESSION['user_perfil']) || $_SESSION['user_perfil'] !== 'Administrador') {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Acesso negado.']);
+            exit;
+        }
+
+        $pdo = null;
+        try {
+            $pdo = \App\Core\Database::getInstance();
+            $pdo->exec('SET FOREIGN_KEY_CHECKS = 0');
+
+            $tables = [
+                'historico_compras',
+                'reservas',
+                'veiculo_imagens',
+                'vendas',
+                'veiculos',
+                'clientes',
+                'noticias',
+                'categorias',
+                'marcas',
+            ];
+
+            foreach ($tables as $table) {
+                $pdo->exec('TRUNCATE TABLE `' . $table . '`');
+            }
+
+            $pdo->exec('SET FOREIGN_KEY_CHECKS = 1');
+
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'message' => 'Todos os dados foram excluídos com sucesso.']);
+        } catch (\Exception $e) {
+            if ($pdo) {
+                $pdo->exec('SET FOREIGN_KEY_CHECKS = 1');
+            }
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Erro ao excluir dados: ' . $e->getMessage()]);
+        }
+        exit;
+    }
+}
 

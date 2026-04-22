@@ -5,6 +5,7 @@
 
 define('URL_BASE', '/stand-cars/public'); // URL base do aplicativo
 define('URL_DESENVOLVIMENTO', 'http://localhost/stand-cars/public'); // URL para desenvolvimento
+define('URL_ASSETS_SITE','/assets/site/images'); // URL dos assets do site
 define('URL_PRODUCAO', 'https://seu-dominio.com'); // URL
 define('PUBLIC_PATH', __DIR__ . '/../public');           // caminho absoluto da pasta public
 define('APP_PATH', __DIR__ . '/../app');                 // caminho absoluto da pasta app

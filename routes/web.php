@@ -123,6 +123,7 @@ Router::group([
 
     Router::get('/configuracoes', 'DashboardController@configuracoes');
     Router::post('/configuracoes/backup', 'DashboardController@backup');
+    Router::post('/configuracoes/delete-all', 'DashboardController@deleteAllData');
     Router::get('/configuracoes/export', 'DashboardController@exportCsv');
     Router::get('/website/configuracoes', 'SiteController@configuracoes');
     Router::post('/website/configuracoes/salvar', 'SiteController@salvarConfiguracao');
@@ -150,7 +151,19 @@ Router::error(function (Request $request, \Throwable $exception) {
     // Sempre loga o erro (boa prática)
     error_log($exception->getMessage());
 
-    // MODO DESENVOLVIMENTO
+    // Verifica se é um erro 404 (rota não encontrada)
+    $is404 = strpos($exception->getMessage(), 'Route not found') !== false || 
+             $exception->getCode() === 404;
+
+    if ($is404) {
+        http_response_code(404);
+        View::render('errors/404', [
+            'message' => 'Página não encontrada.'
+        ]);
+        return;
+    }
+
+    // MODO DESENVOLVIMENTO (para outros erros)
     if (DEBUG) {
 
         http_response_code(500);
@@ -168,17 +181,9 @@ Router::error(function (Request $request, \Throwable $exception) {
     }
 
     // PRODUÇÃO (usuário nunca vê erro técnico)
-    if ($exception->getCode() === 404) {
-        http_response_code(404);
+    http_response_code(500);
 
-        View::render('errors/404', [
-            'message' => 'Página não encontrada.'
-        ]);
-    } else {
-        http_response_code(500);
-
-        View::render('errors/500', [
-            'message' => 'Erro interno. Tente novamente mais tarde.'
-        ]);
-    }
+    View::render('errors/500', [
+        'message' => 'Erro interno. Tente novamente mais tarde.'
+    ]);
 });
